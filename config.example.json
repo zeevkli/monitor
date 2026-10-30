@@ -1,0 +1,21 @@
+{
+  "box_ids": [6287],
+  "interval_minutes": 3,
+  "latitude": 32.7940,
+  "longitude": 34.9896,
+
+  "email": {
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 465,
+    "user": "you@gmail.com",
+    "app_password": "xxxx xxxx xxxx xxxx",
+    "to": "you@gmail.com"
+  },
+
+  "ntfy_topic": null,
+
+  "spareeat_login": {
+    "email": "",
+    "password": ""
+  }
+}

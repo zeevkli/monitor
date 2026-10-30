@@ -1,0 +1,41 @@
+name: SpareEat monitor
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # GitHub's minimum; real runs are often a few minutes late
+  workflow_dispatch: {}      # lets you run it manually from the Actions tab
+
+permissions:
+  contents: write            # needed to commit the state file
+
+concurrency:
+  group: spareeat-monitor
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check boxes
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          STATE_FILE: state/ci-state.json
+          CI_MINUTES: "4"
+        run: python monitor.py --ci
+
+      - name: Save state
+        run: |
+          git config user.name "spareeat-monitor"
+          git config user.email "spareeat-monitor@users.noreply.github.com"
+          git add state/ci-state.json
+          git diff --cached --quiet || (git commit -m "state update" && git pull --rebase && git push)
