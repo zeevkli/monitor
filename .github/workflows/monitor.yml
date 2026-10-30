@@ -3,7 +3,7 @@ name: SpareEat monitor
 on:
   schedule:
     - cron: "*/5 * * * *"   # GitHub's minimum; real runs are often a few minutes late
-  workflow_dispatch: {}      # lets you run it manually from the Actions tab
+  workflow_dispatch: {}      # let s you run it manually from the Actions tab
 
 permissions:
   contents: write            # needed to commit the state file
